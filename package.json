@@ -1,0 +1,90 @@
+{
+  "name": "@ulfalfa/typescript-starter",
+  "version": "0.0.1",
+  "description": "Starter repo for typescript projects",
+  "main": "dist/index",
+  "author": "ulfalfa",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "trash dist && npm run build:main",
+    "build:main": "tsc -p src/tsconfig.main.json",
+    "build:tests": "tsc -p src/tsconfig.spec.json",
+    "lint": "tslint --project tsconfig.json --fix",
+    "unit": "nyc ava",
+    "watch": "ava -vw",
+    "check-coverage": "nyc check-coverage",
+    "html-coverage": "nyc report --reporter=html",
+    "test": "yarn lint && yarn unit && yarn check-coverage",
+    "cov": "yarn unit && yarn html-coverage && opn build/coverage/index.html",
+    "docs": "yarn docs:html && opn build/docs/index.html",
+    "docs:html": "typedoc src/index.ts --excludePrivate --excludeNotExported --excludeProtected --mode file --theme minimal --out build/docs",
+    "docs:publish": "yarn docs:html && gh-pages -d build/docs",
+    "changelog": "standard-version",
+    "release": "yarn reset && yarn test && yarn build && yarn docs:publish && yarn changelog",
+    "reset": "git clean -dfx && git reset --hard && yarn"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "sources": [
+      "src/**/*.ts"
+    ],
+    "files": [
+      "src/**/*.spec.ts"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "**/*.js",
+      "**/*.d.ts",
+      "**/*.spec.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "html",
+      "text"
+    ],
+    "cache": true,
+    "sourceMap": true,
+    "instrument": true,
+    "all": false,
+    "report-dir": "./build/coverage",
+    "temp-directory": "./build/nyc_output"
+  },
+  "devDependencies": {
+    "@types/node": "^10.17.5",
+    "@types/request": "^2.48.3",
+    "ava": "^1.4.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "gh-pages": "^2.1.1",
+    "nyc": "^14.1.1",
+    "opn-cli": "^3.1.0",
+    "standard-version": "^7.0.1",
+    "trash-cli": "^1.4.0",
+    "ts-node": "^6.0.5",
+    "tslint": "^5.16.0",
+    "typedoc": "^0.15.3",
+    "typescript": "^2.8.3"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "request": "^2.88.0",
+    "underscore": "^1.9.1",
+    "xml2js": "^0.4.22",
+    "xmlbuilder": "^13.0.2"
+  },
+  "peerDependencies": {},
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

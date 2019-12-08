@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+       "target": "es6",
+    "outDir": "../build/spec",
+    "module": "commonjs",
+    "types": [
+      "ava",
+      "node"
+    ],
+    "sourceMap": true
+  },
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts"
+  ]
+}
