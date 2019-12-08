@@ -1,7 +1,12 @@
 {
-  "name": "@ulfalfa/typescript-starter",
+  "name": "@ulfalfa/fritzbox",
   "version": "0.0.1",
-  "description": "Starter repo for typescript projects",
+  "description": "A typescript and promised based utilty for accessing a fritzbox via tr064",
+  "keywords": [
+    "fritzbox",
+    "avm",
+    "tr-064"
+  ],
   "main": "dist/index",
   "author": "ulfalfa",
   "license": "MIT",
