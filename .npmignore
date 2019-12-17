@@ -1,1 +1,7 @@
 src
+build
+.gitlab-ci.yml
+public
+tsconfig.json
+tslint.json
+.vscode
