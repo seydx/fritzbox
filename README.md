@@ -61,4 +61,4 @@ const info = await fritzbox.describe()
 
 ## Documentation
 
-Will be provided a typedoc page in gitlab pages
+Will be provided a typedoc page in [gitlab pages](https://ulfalfa.gitlab.io/fritzbox/)

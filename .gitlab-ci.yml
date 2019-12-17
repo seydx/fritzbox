@@ -22,8 +22,20 @@ testing:
 
 pages:
   stage: deploy
+  - tags
+  - triggers
   script:
     - npm run docs
   artifacts:
     paths:
       - public
+
+publish:
+  stage: deploy
+  only:
+    - tags
+    - triggers
+  script:
+    - npm run build
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+    - npm publish
