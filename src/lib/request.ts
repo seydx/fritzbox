@@ -1,11 +1,10 @@
-import * as requestOrig from 'request'
-import { UriOptions, CoreOptions, UrlOptions, Response, Headers } from 'request'
-export { UriOptions, CoreOptions, UrlOptions, Response, Headers } from 'request'
-
-import { parseStringPromise as parseString } from 'xml2js'
-
 import Debug from 'debug'
+import * as requestOrig from 'request'
+import { CoreOptions, Headers, Response, UriOptions, UrlOptions } from 'request'
 import { URL } from 'url'
+import { parseStringPromise as parseString } from 'xml2js'
+export { CoreOptions, Headers, Response, UriOptions, UrlOptions } from 'request'
+
 const debug = Debug('ulfalfa:fritz:request')
 
 export interface RequestOptions {
@@ -14,7 +13,12 @@ export interface RequestOptions {
   headers: Headers
   body: any
 }
-
+/**
+ * extends the original [request](https://github.com/request/request) by wrapping it
+ * in a promise based version and throws an error if statuscode !=200
+ *
+ * @param options the (original request options)[https://github.com/request/request]
+ */
 export function request(
   options: (UriOptions & CoreOptions) | (UrlOptions & CoreOptions)
 ): Promise<Response> {
@@ -36,7 +40,12 @@ export function request(
     })
   })
 }
-
+/**
+ * extends the original [request](https://github.com/request/request) by wrapping it
+ * in a promise based version and throws an error if statuscode !=200.
+ * Additionally it parses the response body with xml2js
+ * @param options the [originalequest options](https://github.com/request/request)
+ */
 export function requestXml(
   options: (UriOptions & CoreOptions) | (UrlOptions & CoreOptions)
 ): Promise<any> {

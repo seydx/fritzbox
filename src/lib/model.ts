@@ -15,15 +15,7 @@ export interface DeviceDescription {
   modelURL: string
   UDN: string
 }
-export function isServiceList(
-  service: ServiceDescription[] | ServiceDescription
-): service is ServiceDescription[] {
-  return Array.isArray(service)
-}
 
-export function isDeviceList(device: Device[] | Device): device is Device[] {
-  return Array.isArray(device)
-}
 export interface Device extends DeviceDescription {
   iconList: {
     icon: {
@@ -46,10 +38,26 @@ export interface ServiceDescription {
   eventSubURL: string
   SCPDURL: string
 }
-
+export interface ServiceDescriptionExt extends ServiceDescription {
+  actions: Action[]
+  events: string[]
+}
 export interface Action {
-  actionName: string
-  inArgs: any
-  outArgs: any
-  // handler(vars: any): Promise<any>
+  name: string
+  parameter: any
+  return: any
+}
+
+export interface HostDescription {
+  mac: string
+  ip: string
+  active: boolean
+  name: string
+  interface: string
+}
+
+export interface FritzboxDescription {
+  type: string
+  sendEvents: boolean
+  actions: string[]
 }

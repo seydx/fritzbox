@@ -1,17 +1,9 @@
-import * as xmlbuilder from 'xmlbuilder'
-import { request, requestXml } from './request'
-
-import { extend } from 'underscore'
-
-import {
-  ServiceDescription,
-  DeviceDescription,
-  FritzboxOptions,
-  Action,
-} from './model'
-
-import { URL } from 'url'
 import Debug from 'debug'
+import { extend } from 'underscore'
+import { URL } from 'url'
+import * as xmlbuilder from 'xmlbuilder'
+import { Action, ServiceDescription, ServiceDescriptionExt } from './model'
+import { requestXml } from './request'
 
 const debug = Debug('ulfalfa:fritz:service')
 
@@ -19,7 +11,7 @@ const isInDirection = argument => argument.direction === 'in'
 
 const isOutDirection = argument => argument.direction === 'out'
 
-// const sendsEvents = stateVariable => stateVariable.$.sendEvents === 'yes'
+const sendsEvents = stateVariable => stateVariable.$.sendEvents === 'yes'
 
 const getInArguments = argumentList => {
   if (argumentList && Array.isArray(argumentList.argument)) {
@@ -69,10 +61,16 @@ const buildSoapMessage = (action, serviceType, vars) => {
   const xml = xmlbuilder.create(root)
   return xml.end()
 }
-
+/**
+ * This class encapsulates a single service of fritzbox with all actions provided
+ * by that service
+ *
+ * @export
+ */
 export class Service implements ServiceDescription {
   protected initialized = false
   protected actions: Map<string, Action> = new Map()
+  protected events: string[] = []
 
   readonly serviceType: string
   readonly serviceId: string
@@ -80,11 +78,21 @@ export class Service implements ServiceDescription {
   readonly eventSubURL: string
   readonly SCPDURL: string
 
+  /**
+   * Creates an instance of Service.
+   * @param serviceInfo the service info as loaded from overview fritzbox xml
+   * @param url the base url of the fritzbox (including protocoll and port, e.g. https://fritz.box:49443)
+   */
   constructor(serviceInfo: ServiceDescription, protected url: URL) {
     debug('Creating service', serviceInfo.serviceType, serviceInfo.serviceId)
     Object.assign(this, serviceInfo)
   }
 
+  /**
+   * initializes the service by requesting the detailed service information from the fritzbox
+   *
+   * @returns the service
+   */
   initialize(): Promise<Service> {
     if (this.initialized) {
       return Promise.resolve(this)
@@ -97,29 +105,59 @@ export class Service implements ServiceDescription {
       }).then(result => {
         debug('Result', result)
         this.parseActions(result.scpd.actionList)
+        this.parseStateVariables(result.scpd.serviceStateTable)
         this.initialized = true
         return this
       })
     }
   }
-
+  /**
+   * parseing the state variables for looking whether this services
+   * provides events
+   *
+   */
+  protected parseStateVariables(serviceStateTable) {
+    if (
+      serviceStateTable.stateVariable &&
+      Array.isArray(serviceStateTable.stateVariable)
+    ) {
+      serviceStateTable.stateVariable
+        .filter(sendsEvents)
+        .forEach(stateVariable => {
+          this.events.push(stateVariable.name)
+          debug('Event', stateVariable)
+        })
+    }
+  }
+  /**
+   * parses the actions from the service description aquired by [[Service.initialize]]
+   *
+   */
   protected parseActions(actionList) {
-    debug('Actions', actionList)
-    actionList.action.forEach(action => {
-      // Create meta informations
-      const myAction: Action = {
-        actionName: action.name,
-        inArgs: getInArguments(action.argumentList),
-        outArgs: getOutArguments(action.argumentList),
-      }
-      debug(
-        `Creating Action ${action.name} of ${this.serviceType} with parameters ${myAction.inArgs}`
-      )
-      this.actions.set(action.name, myAction)
-    })
+    debug('Actions', actionList, !!actionList.action)
+    if (actionList && Array.isArray(actionList.action)) {
+      actionList.action.forEach(action => {
+        // Create meta informations
+        const myAction: Action = {
+          name: action.name,
+          parameter: getInArguments(action.argumentList),
+          return: getOutArguments(action.argumentList),
+        }
+        debug(
+          `Creating Action ${action.name} of ${this.serviceType} with parameters ${myAction.parameter}`
+        )
+        this.actions.set(action.name, myAction)
+      })
+    }
   }
 
-  async execAction(actionName: string, vars: any = []) {
+  /**
+   * exec a single action from a service
+   *
+   * @param [vars={}] the parameters to be used
+   * @returns the result of the action
+   */
+  async execAction(actionName: string, vars: object = {}) {
     debug(`Executing action ${this.serviceId}:${actionName}`, this.url.password)
     await this.initialize()
 
@@ -133,7 +171,7 @@ export class Service implements ServiceDescription {
     const body = buildSoapMessage(actionName, this.serviceType, vars)
 
     debug('Messagebody', body)
-    const outArguments = this.actions.get(actionName).outArgs
+    const outArguments = this.actions.get(actionName).return
 
     const uri = this.url.origin + this.controlURL
 
@@ -175,5 +213,22 @@ export class Service implements ServiceDescription {
         throw error
       }
     })
+  }
+
+  /**
+   * retrieves a human readable description of the service with alle input
+   * and out parameters
+   */
+  async describe(): Promise<ServiceDescriptionExt> {
+    await this.initialize()
+    return {
+      serviceType: this.serviceType,
+      serviceId: this.serviceId,
+      controlURL: this.controlURL,
+      eventSubURL: this.eventSubURL,
+      SCPDURL: this.SCPDURL,
+      actions: Array.from(this.actions.values()),
+      events: this.events,
+    }
   }
 }

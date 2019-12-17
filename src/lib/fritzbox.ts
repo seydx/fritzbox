@@ -1,15 +1,30 @@
-import { requestXml } from './request'
-
-import { defaults } from 'underscore'
-import { Service } from './service'
-import { Device, FritzboxOptions, isServiceList, isDeviceList } from './model'
 import Debug from 'debug'
-
+import { defaults } from 'underscore'
 import { URL } from 'url'
+import {
+  Device,
+  FritzboxOptions,
+  HostDescription,
+  FritzboxDescription,
+  ServiceDescription,
+} from './model'
+import { requestXml } from './request'
+import { Service } from './service'
+
 const debug = Debug('ulfalfa:fritz:device')
 
 const TR064_DESC_URL = '/tr64desc.xml'
 const IGD_DESC_URL = '/igddesc.xml'
+
+const isServiceList = (
+  service: ServiceDescription[] | ServiceDescription
+): service is ServiceDescription[] => {
+  return Array.isArray(service)
+}
+
+const isDeviceList = (device: Device[] | Device): device is Device[] => {
+  return Array.isArray(device)
+}
 
 const DEFAULTS: FritzboxOptions = {
   url: 'http://fritz.box:49000',
@@ -17,20 +32,23 @@ const DEFAULTS: FritzboxOptions = {
   username: undefined,
   password: undefined,
 }
-
-export interface HostDescription {
-  mac: string
-  ip: string
-  active: boolean
-  name: string
-  interface: string
-}
-
+/**
+ * This classes wraps all functionality for accessing a fritzbox via [TR-064](https://avm.de/service/schnittstellen/)
+ *
+ * @export
+ */
 export class Fritzbox {
-  services: Map<string, Service> = new Map()
-  devices: Map<string, Device> = new Map()
+  protected services: Map<string, Service> = new Map()
+  protected devices: Map<string, Device> = new Map()
 
-  readonly options: FritzboxOptions
+  protected readonly options: FritzboxOptions
+
+  protected initialized = false
+
+  /**
+   * the current url to access the fritzbox
+   *
+   */
   readonly url: URL
 
   get serviceCount() {
@@ -49,13 +67,28 @@ export class Fritzbox {
 
     debug('Using url', this.url.toString())
   }
-
-  async initialize() {
-    await this._parseDesc(TR064_DESC_URL)
-    await this._parseDesc(IGD_DESC_URL)
+  /**
+   * initializes the fritzbox by loading the available services
+   * from /tr64desc.xml and /igddesc.xml
+   * can be ommitted, because it's automatically called by any of the services
+   *
+   * @date 2019-12-17
+   */
+  async initialize(): Promise<void> {
+    if (this.initialized) {
+      return
+    }
+    await this.parseDesc(TR064_DESC_URL)
+    await this.parseDesc(IGD_DESC_URL)
+    this.initialized = true
   }
-
-  _getServices(device: Device) {
+  /**
+   * extracts the services from a device and register it
+   *
+   * @date 2019-12-17
+   * @param device the device to parse
+   */
+  protected getServices(device: Device) {
     const serviceList = device.serviceList
     delete device.serviceList
     const deviceList = device.deviceList
@@ -75,36 +108,70 @@ export class Fritzbox {
     if (deviceList) {
       if (isDeviceList(deviceList.device)) {
         deviceList.device.forEach(dev => {
-          this._getServices(dev)
+          this.getServices(dev)
           this.devices.set(dev.deviceType, dev)
         })
       } else {
-        this._getServices(deviceList.device)
+        this.getServices(deviceList.device)
         this.devices.set(deviceList.device.deviceType, deviceList.device)
       }
     }
   }
 
-  protected _parseDesc(url) {
+  /**
+   * retrieves the description of a single url from the fritzbox
+   * and extract the available services
+   *
+   * @date 2019-12-17
+   * @param url the url to fetch (e.g. /tr64desc.xml)
+   * @returns the json structure of the xml loaded from fritzbox
+   */
+  protected parseDesc(url: string): Promise<any> {
     const uri = this.url.origin + url
     return requestXml({
       uri,
       rejectUnauthorized: false,
     }).then(result => {
       this.devices.set(result.root.device.deviceType, result.root.device)
-      this._getServices(result.root.device)
+      this.getServices(result.root.device)
     })
   }
 
-  async exec(serviceId: string, actionName: string, pars?: any) {
-    const service = this.services.get(serviceId)
+  /**
+   * executes an action of a service and returns the result
+   *
+   * @example
+   * e.g. you can get information about the fritzbox with following code
+   * ```
+   * const fb = new Fritzbox({ username: 'test', password: 'testPwd123' })
+   * await fb.initialize()
+   * console.log (await fb..exec('urn:dslforum-org:service:DeviceInfo:1', 'GetInfo'))
+   * ```
+   *
+   * @param [pars] parameters to pass as json object
+   * @returns an object with return values
+   */
+  async exec(
+    serviceType: string,
+    actionName: string,
+    pars?: object
+  ): Promise<object> {
+    await this.initialize()
+    const service = this.services.get(serviceType)
     if (!service) {
       debug(`Available services`, this.services.keys())
-      throw new Error(`service with id ${serviceId} not known`)
+      throw new Error(`service with id ${serviceType} not known`)
     }
     return service.execAction(actionName, pars)
   }
 
+  /**
+   * convenient function for getting all hostinfos from fritzbox by their correspondig
+   * mac addresses
+   *
+   * @param macAddresses a list of macaddresses
+   * @returns info of the requested hosts
+   */
   async getHostInfos(...macAddresses: string[]): Promise<HostDescription[]> {
     const service = this.services.get('urn:dslforum-org:service:Hosts:1')
     await service.initialize()
@@ -125,8 +192,14 @@ export class Fritzbox {
       }))
     })
   }
-
+  /**
+   * convenient function for getting information about all hosts currently registered
+   * at the fritz box
+   *
+   * @returns info of the requested hosts
+   */
   async getAllHosts(): Promise<HostDescription[]> {
+    await this.initialize()
     const service = this.services.get('urn:dslforum-org:service:Hosts:1')
     await service.initialize()
     return this.exec(
@@ -153,5 +226,24 @@ export class Fritzbox {
         }))
       )
     })
+  }
+  /**
+   * gets a short description of all services available
+   * in the fritzbox
+   * for a detailed description of a service see [[Service.describe]]
+   */
+  async describe(): Promise<FritzboxDescription[]> {
+    await this.initialize()
+    const services = Array.from(this.services.values())
+    const result = await Promise.all(
+      services.map(service =>
+        service.describe().then(desc => ({
+          type: desc.serviceType,
+          sendEvents: desc.events.length > 0,
+          actions: desc.actions.map(action => action.name),
+        }))
+      )
+    )
+    return result
   }
 }

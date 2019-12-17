@@ -103,3 +103,10 @@ test('Getting allhost infos', async t => {
     })
   )
 })
+
+test('can describe fritzbox', async t => {
+  const scope = nock.load(__dirname + '/testdata/description.json')
+
+  const result = await t.context.fb.describe()
+  t.snapshot(result)
+})

@@ -6,6 +6,7 @@ import { load } from 'nock'
 
 import { Service } from './service'
 import { URL } from 'url'
+import { inspect } from 'util'
 
 test('can execute service', async t => {
   const service = new Service(
@@ -64,29 +65,6 @@ test('can get info service', async t => {
     })
 })
 
-test('can execute service with https', async t => {
-  const service = new Service(
-    {
-      serviceType: 'urn:dslforum-org:service:Hosts:1',
-      serviceId: 'urn:LanDeviceHosts-com:serviceId:Hosts1',
-      controlURL: '/upnp/control/hosts',
-      eventSubURL: '/upnp/control/hosts',
-      SCPDURL: '/hostsSCPD.xml',
-    },
-    new URL('https://test:testPwd123@fritz.box:49443')
-  )
-  const scope = load(__dirname + '/testdata/Hosts_1_ssl.json')
-
-  return service
-    .initialize()
-    .then(() => service.execAction('GetHostNumberOfEntries'))
-    .then(result => {
-      t.deepEqual(result, {
-        NewHostNumberOfEntries: '999',
-      })
-    })
-})
-
 test('can execute service with empty actions', async t => {
   const service = new Service(
     {
@@ -107,4 +85,22 @@ test('can execute service with empty actions', async t => {
     service.execAction('unknownAction'),
     /action unknownAction of urn:mysimpleservice not known/
   )
+})
+
+test('can describe a service', async t => {
+  const service = new Service(
+    {
+      serviceType: 'urn:mysimpleservice',
+      serviceId: 'urn:mysimpleserviceId',
+      controlURL: '/upnp/control/simple',
+      eventSubURL: '/upnp/control/simple',
+      SCPDURL: '/simpleSCPD.xml',
+    },
+    new URL('http://test:testPwd123@fritz.box:49000')
+  )
+
+  const scope = load(__dirname + '/testdata/simple.json')
+
+  const description = await service.describe()
+  t.snapshot(description)
 })
