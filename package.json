@@ -11,6 +11,7 @@
   "author": "ulfalfa",
   "license": "MIT",
   "private": false,
+  "repository":"https://gitlab.com/ulfalfa/fritzbox.git",
   "scripts": {
     "build": "trash dist && npm run build:main",
     "build:main": "tsc -p src/tsconfig.main.json",
