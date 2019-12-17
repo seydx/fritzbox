@@ -19,3 +19,11 @@ testing:
   stage: test
   script:
     - npm run unit
+
+pages:
+  stage: deploy
+  script:
+    - npm run docs
+  artifacts:
+    paths:
+      - public

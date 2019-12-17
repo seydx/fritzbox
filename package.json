@@ -23,7 +23,7 @@
     "test": "npm run lint && npm run unit && npm run check-coverage",
     "cov": "npm run unit && npm run html-coverage && opn build/coverage/index.html",
     "docs": "npm run docs:html && opn build/docs/index.html",
-    "docs:html": "typedoc src/index.ts --excludePrivate --excludeNotExported --excludeProtected --mode file --theme minimal --out build/docs",
+    "docs:html": "typedoc src/index.ts --excludePrivate --excludeNotExported --excludeProtected --mode file --theme minimal --out public",
     "docs:publish": "yarn docs:html && gh-pages -d build/docs",
     "changelog": "standard-version",
     "release": "yarn reset && yarn test && yarn build && yarn docs:publish && yarn changelog",
