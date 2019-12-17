@@ -1,12 +1,9 @@
 export interface FritzboxOptions {
-  host: string
-  port: number
-  ssl: boolean
-  serverPort: number
-  serverAddress: string
-  user: string
-  pass: string
+  url: string
+  username: string
+  password: string
 }
+
 export interface DeviceDescription {
   deviceType: string
   friendlyName: string
@@ -48,4 +45,11 @@ export interface ServiceDescription {
   controlURL: string
   eventSubURL: string
   SCPDURL: string
+}
+
+export interface Action {
+  actionName: string
+  inArgs: any
+  outArgs: any
+  // handler(vars: any): Promise<any>
 }

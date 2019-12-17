@@ -20,8 +20,8 @@
     "watch": "ava -vw",
     "check-coverage": "nyc check-coverage",
     "html-coverage": "nyc report --reporter=html",
-    "test": "yarn lint && yarn unit && yarn check-coverage",
-    "cov": "yarn unit && yarn html-coverage && opn build/coverage/index.html",
+    "test": "npm run lint && npm run unit && npm run check-coverage",
+    "cov": "npm run unit && npm run html-coverage && opn build/coverage/index.html",
     "docs": "yarn docs:html && opn build/docs/index.html",
     "docs:html": "typedoc src/index.ts --excludePrivate --excludeNotExported --excludeProtected --mode file --theme minimal --out build/docs",
     "docs:publish": "yarn docs:html && gh-pages -d build/docs",
@@ -67,17 +67,19 @@
   "devDependencies": {
     "@types/node": "^10.17.5",
     "@types/request": "^2.48.3",
-    "ava": "^1.4.1",
+    "ava": "^2.4.0",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^2.1.1",
+    "nock": "^11.7.0",
     "nyc": "^14.1.1",
     "opn-cli": "^3.1.0",
+    "rxjs": "^6.x",
     "standard-version": "^7.0.1",
     "trash-cli": "^1.4.0",
     "ts-node": "^6.0.5",
-    "tslint": "^5.16.0",
+    "tslint": "^5.20.1",
     "typedoc": "^0.15.3",
-    "typescript": "^2.8.3"
+    "typescript": "^3.7.3"
   },
   "dependencies": {
     "debug": "^4.1.1",
@@ -86,7 +88,9 @@
     "xml2js": "^0.4.22",
     "xmlbuilder": "^13.0.2"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "rxjs": "^6.x"
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
