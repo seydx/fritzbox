@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://gitlab.com/ulfalfa/fritzbox/compare/v0.0.6...v0.0.7) (2019-12-19)
+
+
+### Features
+
+* **eventserver:** new eventserver and observe method for fritzbox ([03ade67](https://gitlab.com/ulfalfa/fritzbox/commit/03ade671b9695532cf8b8236c357818967d63c46))
+
 ### [0.0.6](https://gitlab.com/ulfalfa/fritzbox/compare/v0.0.5...v0.0.6) (2019-12-17)
 
 ### [0.0.5](https://gitlab.com/ulfalfa/fritzbox/compare/v0.0.4...v0.0.5) (2019-12-17)
