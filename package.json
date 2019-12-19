@@ -11,7 +11,7 @@
   "author": "ulfalfa",
   "license": "MIT",
   "private": false,
-  "repository":"https://gitlab.com/ulfalfa/fritzbox.git",
+  "repository": "https://gitlab.com/ulfalfa/fritzbox.git",
   "scripts": {
     "build": "trash dist && npm run build:main",
     "build:main": "tsc -p src/tsconfig.main.json",
@@ -67,14 +67,17 @@
     "temp-directory": "./build/nyc_output"
   },
   "devDependencies": {
+    "@types/lolex": "^5.1.0",
     "@types/node": "^10.17.5",
     "@types/request": "^2.48.3",
     "ava": "^2.4.0",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^2.1.1",
+    "lolex": "^5.1.1",
     "nock": "^11.7.0",
     "nyc": "^14.1.1",
     "opn-cli": "^3.1.0",
+    "rxjs": "^6.5.3",
     "standard-version": "^7.0.1",
     "trash-cli": "^1.4.0",
     "ts-node": "^6.0.5",
@@ -88,6 +91,9 @@
     "underscore": "^1.9.1",
     "xml2js": "^0.4.22",
     "xmlbuilder": "^13.0.2"
+  },
+  "peerDependencies": {
+    "rxjs": "^6.x"
   },
   "config": {
     "commitizen": {

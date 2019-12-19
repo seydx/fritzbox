@@ -2,6 +2,8 @@ export interface FritzboxOptions {
   url: string
   username: string
   password: string
+  eventAddress: string
+  eventPort: 9999
 }
 
 export interface DeviceDescription {
@@ -60,4 +62,11 @@ export interface FritzboxDescription {
   type: string
   sendEvents: boolean
   actions: string[]
+}
+
+export interface FritzEvent {
+  data: any
+  event: string
+  service: string
+  sid: string
 }

@@ -3,9 +3,10 @@ import { extend } from 'underscore'
 import { URL } from 'url'
 import * as xmlbuilder from 'xmlbuilder'
 import { Action, ServiceDescription, ServiceDescriptionExt } from './model'
-import { requestXml } from './request'
+import { requestXml, request } from './request'
+import { ObjectUnsubscribedError } from 'rxjs'
 
-const debug = Debug('ulfalfa:fritz:service')
+const debug = Debug('ulfalfa:fritzbox:service')
 
 const isInDirection = argument => argument.direction === 'in'
 
@@ -77,6 +78,16 @@ export class Service implements ServiceDescription {
   readonly controlURL: string
   readonly eventSubURL: string
   readonly SCPDURL: string
+
+  protected timer: NodeJS.Timeout
+  get subcriptionActive(): boolean {
+    return !!this.timer
+  }
+
+  protected _sid: string
+  get sid(): string {
+    return this._sid
+  }
 
   /**
    * Creates an instance of Service.
@@ -229,6 +240,44 @@ export class Service implements ServiceDescription {
       SCPDURL: this.SCPDURL,
       actions: Array.from(this.actions.values()),
       events: this.events,
+    }
+  }
+
+  subscribe(callbackUrl: string) {
+    const uri = this.url.origin + this.eventSubURL
+    debug(`Subscribing ${uri} to <${callbackUrl}>`)
+    return request({
+      method: 'SUBSCRIBE',
+      uri,
+      auth: {
+        user: this.url.username,
+        pass: this.url.password,
+        sendImmediately: true,
+      },
+      rejectUnauthorized: false,
+      headers: {
+        CALLBACK: `<${callbackUrl}>`,
+        NT: 'upnp:event',
+        // TIMEOUT: 'Second-infinite',
+      },
+    }).then(response => {
+      this.timer = setTimeout(async () => {
+        await this.subscribe(callbackUrl)
+      }, 1800000)
+      this._sid = response.headers.sid as string
+      debug('Subscribed with sid', this._sid)
+      return {
+        sid: this.sid,
+        timeout: response.headers.timeout as string,
+      }
+    })
+  }
+
+  unsubscribe() {
+    this._sid = undefined
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = undefined
     }
   }
 }

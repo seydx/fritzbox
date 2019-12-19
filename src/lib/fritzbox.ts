@@ -7,11 +7,15 @@ import {
   HostDescription,
   FritzboxDescription,
   ServiceDescription,
+  FritzEvent,
 } from './model'
 import { requestXml } from './request'
 import { Service } from './service'
+import { Observable, using, Unsubscribable, from } from 'rxjs'
+import { EventServer } from './eventserver'
+import { switchMap, map, share, mergeMap, tap } from 'rxjs/operators'
 
-const debug = Debug('ulfalfa:fritz:device')
+const debug = Debug('ulfalfa:fritzbox:device')
 
 const TR064_DESC_URL = '/tr64desc.xml'
 const IGD_DESC_URL = '/igddesc.xml'
@@ -31,13 +35,15 @@ const DEFAULTS: FritzboxOptions = {
 
   username: undefined,
   password: undefined,
+  eventAddress: undefined,
+  eventPort: undefined,
 }
 /**
  * This classes wraps all functionality for accessing a fritzbox via [TR-064](https://avm.de/service/schnittstellen/)
  *
  * @export
  */
-export class Fritzbox {
+export class Fritzbox implements Unsubscribable {
   protected services: Map<string, Service> = new Map()
   protected devices: Map<string, Device> = new Map()
 
@@ -45,11 +51,15 @@ export class Fritzbox {
 
   protected initialized = false
 
+  protected observable: Observable<any>
+  protected es: EventServer
+
   /**
    * the current url to access the fritzbox
    *
    */
   readonly url: URL
+  eventServiceTypes: string[]
 
   get serviceCount() {
     return this.services.size
@@ -244,6 +254,62 @@ export class Fritzbox {
         }))
       )
     )
+    this.eventServiceTypes = result
+      .filter(service => service.sendEvents)
+      .map(service => service.type)
     return result
+  }
+
+  protected getServiceTypeBySid(sid: string): string {
+    let result: string
+    this.services.forEach(service => {
+      if (service.sid === sid) {
+        result = service.serviceType
+        return
+      }
+    })
+    return result
+  }
+  /**
+   * observes *all* events send from the fritzbox and returning a shareable observable
+   */
+  observe(): Observable<FritzEvent> {
+    if (!this.observable) {
+      debug('Creating observable')
+      const observable = using(
+        () => {
+          debug('Creating eventserver')
+          this.es =
+            this.es ||
+            new EventServer(this.options.eventPort, this.options.eventAddress)
+          this.es.listen()
+          this.eventServiceTypes.forEach(type => {
+            debug('Subscribing', type)
+            const service = this.services.get(type)
+            service.subscribe(this.es.callback)
+          })
+          return this
+        },
+        fb => {
+          debug('Subscribe to services')
+          return this.es.asObservable().pipe(
+            tap(data => debug('Data received', data)),
+            map(event => {
+              event.service = this.getServiceTypeBySid(event.sid)
+              return event
+            })
+          )
+        }
+      )
+      this.observable = from(this.describe())
+        .pipe(mergeMap(() => observable))
+        .pipe(share())
+    }
+    return this.observable
+  }
+
+  unsubscribe() {
+    debug('Destroying observable')
+    this.es.close()
   }
 }

@@ -2,11 +2,12 @@ import anyTest, { TestInterface, serial } from 'ava'
 
 const test = serial as TestInterface<{}>
 
-import { load } from 'nock'
+import { load, back } from 'nock'
 
 import { Service } from './service'
 import { URL } from 'url'
 import { inspect } from 'util'
+import { install } from 'lolex'
 
 test('can execute service', async t => {
   const service = new Service(
@@ -103,4 +104,42 @@ test('can describe a service', async t => {
 
   const description = await service.describe()
   t.snapshot(description)
+})
+
+test('can subscribe and unsubscribe', async t => {
+  const scope = load(__dirname + '/testdata/subunsub.json')
+  const clock = install()
+  const service = new Service(
+    {
+      serviceType: 'urn:dslforum-org:service:Hosts:1',
+      serviceId: 'urn:LanDeviceHosts-com:serviceId:Hosts1',
+      controlURL: '/upnp/control/hosts',
+      eventSubURL: '/upnp/control/hosts',
+      SCPDURL: '/hostsSCPD.xml',
+    },
+    new URL('http://test:testPwd123@fritz.box:49000')
+  )
+
+  await service.initialize()
+  t.false(service.subcriptionActive)
+  const result = await service.subscribe('127.0.0.1:1234')
+  t.deepEqual(result, {
+    sid: 'uuid:1026b8aa-1dd2-11b2-9ee1-f7077a861cd8',
+    timeout: 'Second-1801',
+  })
+
+  t.is(service.sid, 'uuid:1026b8aa-1dd2-11b2-9ee1-f7077a861cd8')
+  t.true(service.subcriptionActive)
+  clock.tick(2000000)
+  t.is(service.sid, 'uuid:1026b8aa-1dd2-11b2-9ee1-f7077a861cd8')
+  t.true(service.subcriptionActive)
+
+  service.unsubscribe()
+  t.false(service.subcriptionActive)
+  t.is(service.sid, undefined)
+  clock.tick(2000000)
+  t.false(service.subcriptionActive)
+  t.is(service.sid, undefined)
+  service.unsubscribe()
+  clock.uninstall()
 })

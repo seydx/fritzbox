@@ -1,0 +1,72 @@
+[{
+        "scope": "http://fritz.box:49000",
+        "method": "GET",
+        "path": "/hostsSCPD.xml",
+        "body": "",
+        "status": 200,
+        "response": "<?xml version=\"1.0\"?>\n<scpd xmlns=\"urn:dslforum-org:service-1-0\">\n<specVersion>\n<major>1</major>\n<minor>0</minor>\n</specVersion>\n<actionList>\n<action>\n<name>GetHostNumberOfEntries</name>\n<argumentList>\n<argument>\n<name>NewHostNumberOfEntries</name>\n<direction>out</direction>\n<relatedStateVariable>HostNumberOfEntries</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>GetSpecificHostEntry</name>\n<argumentList>\n<argument>\n<name>NewMACAddress</name>\n<direction>in</direction>\n<relatedStateVariable>MACAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewIPAddress</name>\n<direction>out</direction>\n<relatedStateVariable>IPAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewAddressSource</name>\n<direction>out</direction>\n<relatedStateVariable>AddressSource</relatedStateVariable>\n</argument>\n<argument>\n<name>NewLeaseTimeRemaining</name>\n<direction>out</direction>\n<relatedStateVariable>LeaseTimeRemaining</relatedStateVariable>\n</argument>\n<argument>\n<name>NewInterfaceType</name>\n<direction>out</direction>\n<relatedStateVariable>InterfaceType</relatedStateVariable>\n</argument>\n<argument>\n<name>NewActive</name>\n<direction>out</direction>\n<relatedStateVariable>Active</relatedStateVariable>\n</argument>\n<argument>\n<name>NewHostName</name>\n<direction>out</direction>\n<relatedStateVariable>HostName</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>GetGenericHostEntry</name>\n<argumentList>\n<argument>\n<name>NewIndex</name>\n<direction>in</direction>\n<relatedStateVariable>HostNumberOfEntries</relatedStateVariable>\n</argument>\n<argument>\n<name>NewIPAddress</name>\n<direction>out</direction>\n<relatedStateVariable>IPAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewAddressSource</name>\n<direction>out</direction>\n<relatedStateVariable>AddressSource</relatedStateVariable>\n</argument>\n<argument>\n<name>NewLeaseTimeRemaining</name>\n<direction>out</direction>\n<relatedStateVariable>LeaseTimeRemaining</relatedStateVariable>\n</argument>\n<argument>\n<name>NewMACAddress</name>\n<direction>out</direction>\n<relatedStateVariable>MACAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewInterfaceType</name>\n<direction>out</direction>\n<relatedStateVariable>InterfaceType</relatedStateVariable>\n</argument>\n<argument>\n<name>NewActive</name>\n<direction>out</direction>\n<relatedStateVariable>Active</relatedStateVariable>\n</argument>\n<argument>\n<name>NewHostName</name>\n<direction>out</direction>\n<relatedStateVariable>HostName</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_GetChangeCounter</name>\n<argumentList>\n<argument>\n<name>NewX_AVM-DE_ChangeCounter</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_ChangeCounter</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_SetHostNameByMACAddress</name>\n<argumentList>\n<argument>\n<name>NewMACAddress</name>\n<direction>in</direction>\n<relatedStateVariable>MACAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewHostName</name>\n<direction>in</direction>\n<relatedStateVariable>HostName</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_GetAutoWakeOnLANByMACAddress</name>\n<argumentList>\n<argument>\n<name>NewMACAddress</name>\n<direction>in</direction>\n<relatedStateVariable>MACAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewAutoWOLEnabled</name>\n<direction>out</direction>\n<relatedStateVariable>AutoWOLEnabled</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_SetAutoWakeOnLANByMACAddress</name>\n<argumentList>\n<argument>\n<name>NewMACAddress</name>\n<direction>in</direction>\n<relatedStateVariable>MACAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewAutoWOLEnabled</name>\n<direction>in</direction>\n<relatedStateVariable>AutoWOLEnabled</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_WakeOnLANByMACAddress</name>\n<argumentList>\n<argument>\n<name>NewMACAddress</name>\n<direction>in</direction>\n<relatedStateVariable>MACAddress</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_GetSpecificHostEntryByIP</name>\n<argumentList>\n<argument>\n<name>NewIPAddress</name>\n<direction>in</direction>\n<relatedStateVariable>IPAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewMACAddress</name>\n<direction>out</direction>\n<relatedStateVariable>MACAddress</relatedStateVariable>\n</argument>\n<argument>\n<name>NewActive</name>\n<direction>out</direction>\n<relatedStateVariable>Active</relatedStateVariable>\n</argument>\n<argument>\n<name>NewHostName</name>\n<direction>out</direction>\n<relatedStateVariable>HostName</relatedStateVariable>\n</argument>\n<argument>\n<name>NewInterfaceType</name>\n<direction>out</direction>\n<relatedStateVariable>InterfaceType</relatedStateVariable>\n</argument>\n<argument>\n<name>NewX_AVM-DE_Port</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_Port</relatedStateVariable>\n</argument>\n<argument>\n<name>NewX_AVM-DE_Speed</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_Speed</relatedStateVariable>\n</argument>\n<argument>\n<name>NewX_AVM-DE_UpdateAvailable</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_UpdateAvailable</relatedStateVariable>\n</argument>\n<argument>\n<name>NewX_AVM-DE_UpdateSuccessful</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_UpdateSuccessful</relatedStateVariable>\n</argument>\n<argument>\n<name>NewX_AVM-DE_InfoURL</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_InfoURL</relatedStateVariable>\n</argument>\n<argument>\n<name>NewX_AVM-DE_Model</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_Model</relatedStateVariable>\n</argument>\n<argument>\n<name>NewX_AVM-DE_URL</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_URL</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_HostsCheckUpdate</name>\n</action>\n<action>\n<name>X_AVM-DE_HostDoUpdate</name>\n<argumentList>\n<argument>\n<name>NewMACAddress</name>\n<direction>in</direction>\n<relatedStateVariable>MACAddress</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_GetHostListPath</name>\n<argumentList>\n<argument>\n<name>NewX_AVM-DE_HostListPath</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_HostListPath</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n<action>\n<name>X_AVM-DE_GetMeshListPath</name>\n<argumentList>\n<argument>\n<name>NewX_AVM-DE_MeshListPath</name>\n<direction>out</direction>\n<relatedStateVariable>X_AVM-DE_MeshListPath</relatedStateVariable>\n</argument>\n</argumentList>\n</action>\n</actionList>\n<serviceStateTable>\n<stateVariable sendEvents=\"yes\">\n<name>HostNumberOfEntries</name>\n<dataType>ui2</dataType>\n<defaultValue>0</defaultValue>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>MACAddress</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>IPAddress</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>AddressSource</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>LeaseTimeRemaining</name>\n<dataType>i4</dataType>\n<defaultValue>0</defaultValue>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>InterfaceType</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>Active</name>\n<dataType>boolean</dataType>\n<defaultValue>0</defaultValue>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>HostName</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"yes\">\n<name>X_AVM-DE_ChangeCounter</name>\n<dataType>ui4</dataType>\n<defaultValue>0</defaultValue>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>AutoWOLEnabled</name>\n<dataType>boolean</dataType>\n<defaultValue>0</defaultValue>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_Port</name>\n<dataType>ui4</dataType>\n<defaultValue>0</defaultValue>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_Speed</name>\n<dataType>ui4</dataType>\n<defaultValue>0</defaultValue>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_URL</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_UpdateAvailable</name>\n<dataType>boolean</dataType>\n<defaultValue>0</defaultValue>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_UpdateSuccessful</name>\n<dataType>string</dataType>\n<allowedValueList>\n<allowedValue>unknown</allowedValue>\n<allowedValue>failed</allowedValue>\n<allowedValue>succeeded</allowedValue>\n</allowedValueList>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_InfoURL</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_Model</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_HostListPath</name>\n<dataType>string</dataType>\n</stateVariable>\n<stateVariable sendEvents=\"no\">\n<name>X_AVM-DE_MeshListPath</name>\n<dataType>string</dataType>\n</stateVariable>\n</serviceStateTable>\n</scpd>\n",
+        "rawHeaders": [
+            "Cache-Control",
+            "max-age=120",
+            "Connection",
+            "close",
+            "Content-Length",
+            "9159",
+            "Content-Type",
+            "text/xml",
+            "Date",
+            "Wed, 18 Dec 2019 22:23:48 GMT",
+            "ETag",
+            "\"35EE08F41E0A0F69E\"",
+            "Expires",
+            "Wed, 18 Dec 2019 22:25:48 GMT",
+            "Last-Modified",
+            "Wed, 18 Sep 2019 15:20:42 GMT",
+            "Mime-Version",
+            "1.0"
+        ],
+        "responseIsBinary": false
+    },
+    {
+        "scope": "http://fritz.box:49000",
+        "method": "SUBSCRIBE",
+        "path": "/upnp/control/hosts",
+        "body": "",
+        "status": 200,
+        "response": "",
+        "rawHeaders": [
+            "DATE",
+            "Wed, 18 Dec 2019 22:23:49 GMT",
+            "SERVER",
+            "FRITZ!Box 6490 Cable (kdg) UPnP/1.0 AVM FRITZ!Box 6490 Cable (kdg) 141.07.12",
+            "CONTENT-LENGTH",
+            "0",
+            "SID",
+            "uuid:1026b8aa-1dd2-11b2-9ee1-f7077a861cd8",
+            "TIMEOUT",
+            "Second-1801"
+        ],
+        "responseIsBinary": false
+    },
+    {
+        "scope": "http://fritz.box:49000",
+        "method": "SUBSCRIBE",
+        "path": "/upnp/control/hosts",
+        "body": "",
+        "status": 200,
+        "response": "",
+        "rawHeaders": [
+            "DATE",
+            "Wed, 18 Dec 2019 22:23:49 GMT",
+            "SERVER",
+            "FRITZ!Box 6490 Cable (kdg) UPnP/1.0 AVM FRITZ!Box 6490 Cable (kdg) 141.07.12",
+            "CONTENT-LENGTH",
+            "0",
+            "SID",
+            "uuid:1026b8aa-1dd2-11b2-9ee1-f7077a861cd9",
+            "TIMEOUT",
+            "Second-1801"
+        ],
+        "responseIsBinary": false
+    }
+]

@@ -7,6 +7,9 @@ import * as nock from 'nock'
 import { back } from 'nock'
 
 import { Fritzbox } from './fritzbox'
+import { take, tap, toArray, startWith } from 'rxjs/operators'
+import { fstat, writeFileSync } from 'fs'
+import { request } from './request'
 
 test.before(() => {})
 
@@ -109,4 +112,80 @@ test('can describe fritzbox', async t => {
 
   const result = await t.context.fb.describe()
   t.snapshot(result)
+})
+
+test.cb('can observe events', t => {
+  t.plan(2)
+  const fb = new Fritzbox({
+    username: 'test',
+    password: 'testPwd123',
+    eventAddress: '127.0.0.1',
+    eventPort: 9999,
+  })
+
+  const scope = nock.load(__dirname + '/testdata/observe.json')
+  const prom1 = fb
+    .observe()
+    .pipe(take(1))
+    .toPromise()
+    .then(data => {
+      t.log('Recevied 1')
+      t.deepEqual(data, {
+        data: '67',
+        event: 'HostNumberOfEntries',
+        service: 'urn:dslforum-org:service:WLANConfiguration:2',
+        sid: 'uuid:22fae32c-1dd2-11b2-9ee6-f7077a861cd8',
+      })
+    })
+    .catch(e => {
+      t.fail('Catched error 1')
+    })
+
+  const prom2 = fb
+    .observe()
+    .pipe(take(1))
+    .subscribe(
+      data => {
+        t.log('Recevied 2')
+        t.deepEqual(data, {
+          data: '67',
+          event: 'HostNumberOfEntries',
+          service: 'urn:dslforum-org:service:WLANConfiguration:2',
+          sid: 'uuid:22fae32c-1dd2-11b2-9ee6-f7077a861cd8',
+        })
+      },
+      err => {
+        console.log(err)
+        t.fail('Catched error')
+      }
+    )
+  Promise.all([prom1, prom2]).then(() => t.end())
+
+  setTimeout(() => {
+    nock.restore()
+
+    t.log('Posting events')
+
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:9999',
+      headers: {
+        nt: 'upnp:event',
+        nts: 'upnp:propchane',
+        sid: 'uuid:22fae32c-1dd2-11b2-9ee6-f7077a861cd8',
+        seq: '0',
+      },
+      body:
+        '<?xml version="1.0"?>\n' +
+        '<e:propertyset xmlns:e="urn:dslforum-org:event-1-0">\n' +
+        '<e:property>\n' +
+        '<HostNumberOfEntries>67</HostNumberOfEntries></e:property>\n' +
+        /*'<e:property>\n' +
+        '<X_AVM-DE_ChangeCounter>0</X_AVM-DE_ChangeCounter></e:property>\n' +*/
+        '</e:propertyset>\n' +
+        '\u0000',
+    }).catch(e => {
+      console.error(e)
+    })
+  }, 500)
 })
