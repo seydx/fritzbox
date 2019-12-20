@@ -11,7 +11,9 @@ import { take, tap, toArray, startWith } from 'rxjs/operators'
 import { fstat, writeFileSync } from 'fs'
 import { request } from './request'
 
-test.before(() => {})
+test.before(() => {
+  nock.disableNetConnect()
+})
 
 test.beforeEach(async t => {
   const scope = nock.load(__dirname + '/testdata/fritzbox.json')
@@ -204,7 +206,6 @@ test.cb('can observe events', t => {
 })
 
 test('security port', async t => {
-  nock.cleanAll()
   nock.load(__dirname + '/testdata/fritzbox.json')
 
   const fb = new Fritzbox({
