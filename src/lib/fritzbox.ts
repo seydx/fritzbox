@@ -11,9 +11,17 @@ import {
 } from './model'
 import { requestXml } from './request'
 import { Service } from './service'
-import { Observable, using, Unsubscribable, from } from 'rxjs'
+import { Observable, using, Unsubscribable, from, range } from 'rxjs'
 import { EventServer } from './eventserver'
-import { switchMap, map, share, mergeMap, tap } from 'rxjs/operators'
+import {
+  switchMap,
+  map,
+  share,
+  mergeMap,
+  tap,
+  take,
+  toArray,
+} from 'rxjs/operators'
 
 const debug = Debug('ulfalfa:fritzbox:device')
 
@@ -208,17 +216,44 @@ export class Fritzbox implements Unsubscribable {
    *
    * @returns info of the requested hosts
    */
-  async getAllHosts(): Promise<HostDescription[]> {
+  async getAllHosts(): Promise<any[]> {
     await this.initialize()
-    const service = this.services.get('urn:dslforum-org:service:Hosts:1')
-    await service.initialize()
-    return this.exec(
-      'urn:dslforum-org:service:Hosts:1',
-      'GetHostNumberOfEntries'
-    ).then((result: any) => {
+    return from(
+      this.exec('urn:dslforum-org:service:Hosts:1', 'GetHostNumberOfEntries')
+    )
+      .pipe(
+        switchMap((result: { NewHostNumberOfEntries: string }) =>
+          range(1, parseInt(result.NewHostNumberOfEntries, 0) - 1)
+        ),
+        tap(result => debug('Result', result)),
+        mergeMap(
+          idx =>
+            this.exec(
+              'urn:dslforum-org:service:Hosts:1',
+              'GetGenericHostEntry',
+              {
+                NewIndex: idx,
+              }
+            ),
+          20
+        ),
+        map((entry: any) => ({
+          mac: entry.NewMACAddress,
+          ip: entry.NewIPAddress,
+          active: entry.NewActive === '1',
+          name: entry.NewHostName,
+          interface: entry.NewInterfaceType,
+        })),
+
+        toArray()
+      )
+      .toPromise()
+
+    /*.then((result: any) => {
       const hosts = [
         ...Array(parseInt(result.NewHostNumberOfEntries, 0) - 1).keys(),
-      ]
+       ]
+      const hosts = [0, 1, 2, 3, 4]
 
       return Promise.all(
         hosts.map(idx =>
@@ -235,7 +270,7 @@ export class Fritzbox implements Unsubscribable {
           interface: entry.NewInterfaceType,
         }))
       )
-    })
+    })*/
   }
   /**
    * gets a short description of all services available

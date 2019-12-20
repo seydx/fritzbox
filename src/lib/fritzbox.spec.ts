@@ -96,7 +96,7 @@ test('Getting allhost infos', async t => {
   return fb.initialize().then(() =>
     t.context.fb.getAllHosts().then(result => {
       t.is(result.length, 16)
-      t.deepEqual(result[8], {
+      t.deepEqual(result[7], {
         active: true,
         interface: '802.11',
         ip: '10.1.2.54',
