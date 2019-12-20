@@ -16,7 +16,11 @@ test.before(() => {})
 test.beforeEach(async t => {
   const scope = nock.load(__dirname + '/testdata/fritzbox.json')
 
-  const fb = new Fritzbox({ username: 'test', password: 'testPwd123' })
+  const fb = new Fritzbox({
+    username: 'test',
+    password: 'testPwd123',
+    autoSsl: false,
+  })
   return fb.initialize().then(() => {
     t.context.fb = fb
   })
@@ -62,7 +66,11 @@ test('failing with unexisting service', async t => {
 
 test('Getting host infos', async t => {
   const scope = nock.load(__dirname + '/testdata/gethosts.json')
-  const fb = new Fritzbox({ username: 'test', password: 'testPwd123' })
+  const fb = new Fritzbox({
+    username: 'test',
+    password: 'testPwd123',
+    autoSsl: false,
+  })
 
   return fb.initialize().then(() =>
     t.context.fb
@@ -91,7 +99,11 @@ test('Getting host infos', async t => {
 test('Getting allhost infos', async t => {
   const scope = nock.load(__dirname + '/testdata/gethosts.json')
 
-  const fb = new Fritzbox({ username: 'test', password: 'testPwd123' })
+  const fb = new Fritzbox({
+    username: 'test',
+    password: 'testPwd123',
+    autoSsl: false,
+  })
 
   return fb.initialize().then(() =>
     t.context.fb.getAllHosts().then(result => {
@@ -121,6 +133,7 @@ test.cb('can observe events', t => {
     password: 'testPwd123',
     eventAddress: '127.0.0.1',
     eventPort: 9999,
+    autoSsl: false,
   })
 
   const scope = nock.load(__dirname + '/testdata/observe.json')
@@ -188,4 +201,24 @@ test.cb('can observe events', t => {
       console.error(e)
     })
   }, 500)
+})
+
+test('security port', async t => {
+  nock.cleanAll()
+  nock.load(__dirname + '/testdata/fritzbox.json')
+
+  const fb = new Fritzbox({
+    username: 'test',
+    password: 'testPwd123',
+    autoSsl: true,
+  })
+
+  t.is(fb.url.port, '49000')
+
+  return fb
+    .initialize()
+
+    .then(() => {
+      t.is(fb.url.port, '49443')
+    })
 })

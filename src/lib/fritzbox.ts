@@ -45,6 +45,8 @@ const DEFAULTS: FritzboxOptions = {
   password: undefined,
   eventAddress: undefined,
   eventPort: undefined,
+
+  autoSsl: true,
 }
 /**
  * This classes wraps all functionality for accessing a fritzbox via [TR-064](https://avm.de/service/schnittstellen/)
@@ -99,6 +101,9 @@ export class Fritzbox implements Unsubscribable {
     await this.parseDesc(TR064_DESC_URL)
     await this.parseDesc(IGD_DESC_URL)
     this.initialized = true
+    if (this.options.autoSsl) {
+      await this.upgradeSsl()
+    }
   }
   /**
    * extracts the services from a device and register it
@@ -248,29 +253,6 @@ export class Fritzbox implements Unsubscribable {
         toArray()
       )
       .toPromise()
-
-    /*.then((result: any) => {
-      const hosts = [
-        ...Array(parseInt(result.NewHostNumberOfEntries, 0) - 1).keys(),
-       ]
-      const hosts = [0, 1, 2, 3, 4]
-
-      return Promise.all(
-        hosts.map(idx =>
-          this.exec('urn:dslforum-org:service:Hosts:1', 'GetGenericHostEntry', {
-            NewIndex: idx,
-          })
-        )
-      ).then(out =>
-        out.map((entry: any) => ({
-          mac: entry.NewMACAddress,
-          ip: entry.NewIPAddress,
-          active: entry.NewActive === '1',
-          name: entry.NewHostName,
-          interface: entry.NewInterfaceType,
-        }))
-      )
-    })*/
   }
   /**
    * gets a short description of all services available
@@ -346,5 +328,23 @@ export class Fritzbox implements Unsubscribable {
   unsubscribe() {
     debug('Destroying observable')
     this.es.close()
+  }
+
+  async getSecurityPort(): Promise<string> {
+    return this.exec(
+      'urn:dslforum-org:service:DeviceInfo:1',
+      'GetSecurityPort'
+    ).then((result: any) => {
+      debug('Anwer', result)
+      return result.NewSecurityPort
+    })
+  }
+
+  protected async upgradeSsl() {
+    debug(`current protocol is ${this.url.protocol}`)
+
+    const port = await this.getSecurityPort()
+    this.url.protocol = 'https:'
+    this.url.port = port
   }
 }
