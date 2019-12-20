@@ -37,6 +37,9 @@ export class EventServer {
     protected readonly port: number,
     protected readonly address: string
   ) {
+    if (!port || !address) {
+      throw new Error('eventserver address and/or port missing')
+    }
     this.server = createServer()
   }
 

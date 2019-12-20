@@ -9,6 +9,13 @@ test('can be initialized', t => {
   t.is(es.callback, 'http://127.0.0.1:9999')
 })
 
+test('throws without port or address', t => {
+  t.throws(
+    () => new EventServer(undefined, '127.0.0.1'),
+    'eventserver address and/or port missing'
+  )
+})
+
 test('can listen for events', t => {
   const es = new EventServer(9999, '127.0.0.1')
 
