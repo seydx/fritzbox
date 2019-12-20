@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://gitlab.com/ulfalfa/fritzbox/compare/v0.0.7...v0.0.8) (2019-12-20)
+
+
+### Features
+
+* **ssl:** auto upgrade to ssl connection ([8b53cee](https://gitlab.com/ulfalfa/fritzbox/commit/8b53cee8b84ad4fbcf068bc73daf54af8637e4ff))
+
+
+### Bug Fixes
+
+* **eventserver:** checking for mandatory port and address ([8d364c0](https://gitlab.com/ulfalfa/fritzbox/commit/8d364c067b1e4ba204c096ae39dc4b9484b68de3))
+* **fritzbox:** reducing parallel calls to fritz to 20 maximum parallel calls ([8b74179](https://gitlab.com/ulfalfa/fritzbox/commit/8b74179a14d1a1ea548b302f731f40b57a2cab8d))
+
 ### [0.0.7](https://gitlab.com/ulfalfa/fritzbox/compare/v0.0.6...v0.0.7) (2019-12-19)
 
 
