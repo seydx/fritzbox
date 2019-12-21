@@ -8,14 +8,13 @@ import { back } from 'nock'
 
 import { Fritzbox } from './fritzbox'
 import { take, tap, toArray, startWith } from 'rxjs/operators'
-import { fstat, writeFileSync } from 'fs'
 import { request } from './request'
 
-test.before(() => {
-  nock.disableNetConnect()
-})
+test.before(() => {})
 
 test.beforeEach(async t => {
+  nock.disableNetConnect()
+  t.log('Before each')
   const scope = nock.load(__dirname + '/testdata/fritzbox.json')
 
   const fb = new Fritzbox({
@@ -203,23 +202,4 @@ test.cb('can observe events', t => {
       console.error(e)
     })
   }, 500)
-})
-
-test('security port', async t => {
-  nock.load(__dirname + '/testdata/fritzbox.json')
-
-  const fb = new Fritzbox({
-    username: 'test',
-    password: 'testPwd123',
-    autoSsl: true,
-  })
-
-  t.is(fb.url.port, '49000')
-
-  return fb
-    .initialize()
-
-    .then(() => {
-      t.is(fb.url.port, '49443')
-    })
 })
