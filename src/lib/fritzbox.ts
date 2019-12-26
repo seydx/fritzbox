@@ -329,7 +329,10 @@ export class Fritzbox implements Unsubscribable {
     debug('Destroying observable')
     this.es.close()
   }
-
+  /**
+   * get the ssl port of tr064 in fritzbox
+   *
+   */
   async getSecurityPort(): Promise<string> {
     return this.exec(
       'urn:dslforum-org:service:DeviceInfo:1',
@@ -347,7 +350,10 @@ export class Fritzbox implements Unsubscribable {
     this.url.protocol = 'https:'
     this.url.port = port
   }
-
+  /**
+   * gets the current external ipv4 address of the fritzbox
+   *
+   */
   async getExternalIPV4(): Promise<string> {
     return this.exec(
       'urn:schemas-upnp-org:service:WANIPConnection:1',
