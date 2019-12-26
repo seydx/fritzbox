@@ -347,4 +347,11 @@ export class Fritzbox implements Unsubscribable {
     this.url.protocol = 'https:'
     this.url.port = port
   }
+
+  async getExternalIPV4(): Promise<string> {
+    return this.exec(
+      'urn:schemas-upnp-org:service:WANIPConnection:1',
+      'GetExternalIPAddress'
+    ).then((result: any) => result.NewExternalIPAddress as string)
+  }
 }
