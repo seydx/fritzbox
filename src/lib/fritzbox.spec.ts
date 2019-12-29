@@ -38,7 +38,7 @@ test('can execute service', async t => {
 
   const fb = t.context.fb
   return fb
-    .exec('urn:dslforum-org:service:DeviceInfo:1', 'GetInfo')
+    .exec('urn:DeviceInfo-com:serviceId:DeviceInfo1', 'GetInfo')
     .then(result => {
       t.deepEqual(result, {
         NewDescription: 'FRITZ!Box 7490 (UI) 113.07.12',
@@ -143,11 +143,11 @@ test.cb('can observe events', t => {
     .pipe(take(1))
     .toPromise()
     .then(data => {
-      t.log('Recevied 1')
+      t.log('Received 1')
       t.deepEqual(data, {
         data: '67',
         event: 'HostNumberOfEntries',
-        service: 'urn:dslforum-org:service:WLANConfiguration:2',
+        service: 'urn:WLANConfiguration-com:serviceId:WLANConfiguration2',
         sid: 'uuid:22fae32c-1dd2-11b2-9ee6-f7077a861cd8',
       })
     })
@@ -164,7 +164,7 @@ test.cb('can observe events', t => {
         t.deepEqual(data, {
           data: '67',
           event: 'HostNumberOfEntries',
-          service: 'urn:dslforum-org:service:WLANConfiguration:2',
+          service: 'urn:WLANConfiguration-com:serviceId:WLANConfiguration2',
           sid: 'uuid:22fae32c-1dd2-11b2-9ee6-f7077a861cd8',
         })
       },

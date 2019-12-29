@@ -9,21 +9,27 @@ const box = new Fritzbox({
   eventPort: 9999,
 })
 
-box
+/*box
   .observe()
   .pipe(
     filter(
-      type => type.service === 'urn:dslforum-org:service:WLANConfiguration:3'
+      type =>
+        type.service ===
+        'urn:WLANConfiguration-com:serviceId:WLANConfiguration3'
     )
   )
   .subscribe(console.log)
+*/
 
 box
-  .exec('urn:dslforum-org:service:WLANConfiguration:3', 'SetEnable', {
+  .exec('urn:WLANConfiguration-com:serviceId:WLANConfiguration3', 'SetEnable', {
     NewEnable: false,
   })
   .then(console.log, console.error)
   .then(() =>
-    box.exec('urn:dslforum-org:service:WLANConfiguration:3', 'GetSSID')
+    box.exec(
+      'urn:WLANConfiguration-com:serviceId:WLANConfiguration3',
+      'GetSSID'
+    )
   )
   .then(console.log, console.error)

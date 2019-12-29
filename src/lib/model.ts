@@ -60,7 +60,7 @@ export interface HostDescription {
 }
 
 export interface FritzboxDescription {
-  type: string
+  id: string
   sendEvents: boolean
   actions: string[]
 }

@@ -8,15 +8,12 @@ const box = new Fritzbox({
 })
 
 box
-  .exec(
-    'urn:schemas-upnp-org:service:WANIPConnection:1',
-    'GetExternalIPAddress'
-  )
+  .exec('urn:upnp-org:serviceId:WANIPConn1', 'GetExternalIPAddress')
   .then(console.log, console.error)
   .then(() =>
     box
       .exec(
-        'urn:schemas-upnp-org:service:WANIPConnection:1',
+        'urn:upnp-org:serviceId:WANIPConn1',
         'X_AVM_DE_GetExternalIPv6Address'
       )
       .then(console.log, console.error)

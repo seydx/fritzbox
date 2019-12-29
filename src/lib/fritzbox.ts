@@ -119,11 +119,11 @@ export class Fritzbox implements Unsubscribable {
 
     if (isServiceList(serviceList.service)) {
       serviceList.service.forEach(service => {
-        this.services.set(service.serviceType, new Service(service, this.url))
+        this.services.set(service.serviceId, new Service(service, this.url))
       })
     } else {
       this.services.set(
-        serviceList.service.serviceType,
+        serviceList.service.serviceId,
         new Service(serviceList.service, this.url)
       )
     }
@@ -175,15 +175,15 @@ export class Fritzbox implements Unsubscribable {
    * @returns an object with return values
    */
   async exec(
-    serviceType: string,
+    serviceId: string,
     actionName: string,
     pars?: object
   ): Promise<object> {
     await this.initialize()
-    const service = this.services.get(serviceType)
+    const service = this.services.get(serviceId)
     if (!service) {
       debug(`Available services`, this.services.keys())
-      throw new Error(`service with id ${serviceType} not known`)
+      throw new Error(`service with id ${serviceId} not known`)
     }
     return service.execAction(actionName, pars)
   }
@@ -196,7 +196,7 @@ export class Fritzbox implements Unsubscribable {
    * @returns info of the requested hosts
    */
   async getHostInfos(...macAddresses: string[]): Promise<HostDescription[]> {
-    const service = this.services.get('urn:dslforum-org:service:Hosts:1')
+    const service = this.services.get('urn:LanDeviceHosts-com:serviceId:Hosts1')
     await service.initialize()
     return Promise.all(
       macAddresses.map(host =>
@@ -224,7 +224,10 @@ export class Fritzbox implements Unsubscribable {
   async getAllHosts(): Promise<any[]> {
     await this.initialize()
     return from(
-      this.exec('urn:dslforum-org:service:Hosts:1', 'GetHostNumberOfEntries')
+      this.exec(
+        'urn:LanDeviceHosts-com:serviceId:Hosts1',
+        'GetHostNumberOfEntries'
+      )
     )
       .pipe(
         switchMap((result: { NewHostNumberOfEntries: string }) =>
@@ -234,7 +237,7 @@ export class Fritzbox implements Unsubscribable {
         mergeMap(
           idx =>
             this.exec(
-              'urn:dslforum-org:service:Hosts:1',
+              'urn:LanDeviceHosts-com:serviceId:Hosts1',
               'GetGenericHostEntry',
               {
                 NewIndex: idx,
@@ -265,7 +268,7 @@ export class Fritzbox implements Unsubscribable {
     const result = await Promise.all(
       services.map(service =>
         service.describe().then(desc => ({
-          type: desc.serviceType,
+          id: desc.serviceId,
           sendEvents: desc.events.length > 0,
           actions: desc.actions.map(action => action.name),
         }))
@@ -273,7 +276,7 @@ export class Fritzbox implements Unsubscribable {
     )
     this.eventServiceTypes = result
       .filter(service => service.sendEvents)
-      .map(service => service.type)
+      .map(service => service.id)
     return result
   }
 
@@ -281,7 +284,7 @@ export class Fritzbox implements Unsubscribable {
     let result: string
     this.services.forEach(service => {
       if (service.sid === sid) {
-        result = service.serviceType
+        result = service.serviceId
         return
       }
     })
@@ -335,7 +338,7 @@ export class Fritzbox implements Unsubscribable {
    */
   async getSecurityPort(): Promise<string> {
     return this.exec(
-      'urn:dslforum-org:service:DeviceInfo:1',
+      'urn:DeviceInfo-com:serviceId:DeviceInfo1',
       'GetSecurityPort'
     ).then((result: any) => {
       debug('Anwer', result)

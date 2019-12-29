@@ -5,7 +5,7 @@ import { inspect } from 'util'
 const box = new Fritzbox({ username: 'test', password: 'testPwd123' })
 
 box
-  .exec('urn:dslforum-org:service:X_AVM-DE_OnTel:1', 'GetPhonebook', {
+  .exec('urn:X_AVM-DE_OnTel-com:serviceId:X_AVM-DE_OnTel1', 'GetPhonebook', {
     NewPhonebookID: 0,
   })
   .then((result: any) => {
