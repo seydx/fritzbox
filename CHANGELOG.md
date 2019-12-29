@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://gitlab.com/ulfalfa/fritzbox/compare/v0.0.10...v0.1.0) (2019-12-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **serviceId:** since the identifier is now the id and not the type anymore any calls to "exec" are
+not working anymore
+
+### Features
+
+* **serviceId:** I switched the service identifier from type to id ([8102209](https://gitlab.com/ulfalfa/fritzbox/commit/810220965ede51cb122056a63570369fa5c33df9))
+
 ### [0.0.10](https://gitlab.com/ulfalfa/fritzbox/compare/v0.0.9...v0.0.10) (2019-12-26)
 
 
