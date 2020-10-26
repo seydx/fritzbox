@@ -39,7 +39,7 @@ const info = await fritzbox.exec(
 ```typescript
 import { Fritzbox } from './lib/fritzbox'
 
-const fritzbox = new Fritzbox({ url: 'https://test:'testPwd123@https://fritz.box:49433' })
+const fritzbox = new Fritzbox({ url: 'https://test:testPwd123@fritz.box:49433' })
 
 const allHosts = await fritzbox.getAllHosts();
 
