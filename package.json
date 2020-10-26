@@ -1,6 +1,6 @@
 {
-  "name": "@ulfalfa/fritzbox",
-  "version": "0.1.0",
+  "name": "@seydx/fritzbox",
+  "version": "1.0.0",
   "description": "A typescript and promised based utilty for accessing a fritzbox via tr064",
   "keywords": [
     "fritzbox",
