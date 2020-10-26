@@ -90,10 +90,8 @@
     "request": "^2.88.0",
     "underscore": "^1.9.1",
     "xml2js": "^0.4.22",
-    "xmlbuilder": "^13.0.2"
-  },
-  "peerDependencies": {
-    "rxjs": "^6.x"
+    "xmlbuilder": "^13.0.2",
+    "rxjs": "^6.5.3"
   },
   "config": {
     "commitizen": {
