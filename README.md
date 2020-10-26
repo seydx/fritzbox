@@ -1,10 +1,6 @@
-# @ulfalfa/fritzbox
+# @seydx/fritzbox
 
-[![pipeline status](https://gitlab.com/ulfalfa/fritzbox/badges/master/pipeline.svg)](https://gitlab.com/ulfalfa/fritzbox/commits/master)
-[![coverage report](https://gitlab.com/ulfalfa/fritzbox/badges/master/coverage.svg)](https://gitlab.com/ulfalfa/fritzbox/commits/master)
-![npm (scoped)](https://img.shields.io/npm/v/@ulfalfa/fritzbox?style=flat-square)
-
-> A promise based library for accessing a fritzbox via TR-064 API of an AVM Fritz!Box written in typescript
+> A promise based library for accessing a fritzbox via TR-064 API of an AVM Fritz!Box written in typescript. Forked from @ulfalfa
 
 ## Features
 
