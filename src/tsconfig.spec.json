@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
        "target": "es6",
-    "outDir": "./build/spec",
+    "outDir": "../build/spec",
     "module": "commonjs",
     "types": [
       "ava",
