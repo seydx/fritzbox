@@ -1,6 +1,6 @@
 {
   "name": "@seydx/fritzbox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A typescript and promised based utilty for accessing a fritzbox via tr064",
   "keywords": [
     "fritzbox",
@@ -78,7 +78,7 @@
     "nyc": "^14.1.1",
     "opn-cli": "^3.1.0",
     "rxjs": "^6.5.3",
-    "standard-version": "^8.0.1",
+    "standard-version": "^7.0.1",
     "trash-cli": "^1.4.0",
     "ts-node": "^6.0.5",
     "tslint": "^5.20.1",
@@ -90,8 +90,10 @@
     "request": "^2.88.0",
     "underscore": "^1.9.1",
     "xml2js": "^0.4.22",
-    "xmlbuilder": "^13.0.2",
-    "rxjs": "^6.5.3"
+    "xmlbuilder": "^13.0.2"
+  },
+  "peerDependencies": {
+    "rxjs": "^6.x"
   },
   "config": {
     "commitizen": {
