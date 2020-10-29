@@ -3,12 +3,16 @@
     "module": "commonjs",
     "target": "es6",
     "declaration": true,
-    "allowJs":false,
-    "sourceMap":true,
-    "typeRoots": [ "node_modules/@types" ],
-    "lib":["es2015"],
-    "strict":false
-      },
+    "allowJs": false,
+    "sourceMap": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2015"
+    ],
+    "strict": false
+  },
   "include": [
     "src/**/*.ts"
   ]

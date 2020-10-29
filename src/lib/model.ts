@@ -4,6 +4,8 @@ export interface FritzboxOptions {
   password: string
   eventAddress: string
   eventPort: 9999
+  tr064: boolean
+  igd: boolean
   autoSsl: boolean
 }
 

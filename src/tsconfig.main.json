@@ -6,10 +6,9 @@
   "include": [
     "**/*.ts",
     "**/*.d.ts"
-
   ],
-  "sourceMap":false,
-  "exclude" : [
+  "sourceMap": false,
+  "exclude": [
     "**/*.spec.ts"
   ]
 }

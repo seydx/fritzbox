@@ -45,6 +45,9 @@ const DEFAULTS: FritzboxOptions = {
   password: undefined,
   eventAddress: undefined,
   eventPort: undefined,
+  
+  tr064: true,
+  igd: true,
 
   autoSsl: true,
 }
@@ -98,8 +101,12 @@ export class Fritzbox implements Unsubscribable {
     if (this.initialized) {
       return
     }
-    await this.parseDesc(TR064_DESC_URL)
-    await this.parseDesc(IGD_DESC_URL)
+    if (this.options.tr064) {
+      await this.parseDesc(TR064_DESC_URL)
+    }
+    if (this.options.igd) {
+      await this.parseDesc(IGD_DESC_URL)
+    }
     this.initialized = true
     if (this.options.autoSsl) {
       await this.upgradeSsl()
@@ -180,10 +187,58 @@ export class Fritzbox implements Unsubscribable {
     pars?: object
   ): Promise<object> {
     await this.initialize()
-    const service = this.services.get(serviceId)
+    let service = this.services.get(serviceId)
     if (!service) {
-      debug(`Available services`, this.services.keys())
-      throw new Error(`service with id ${serviceId} not known`)
+    
+      let newService;
+      let check = 'dslforum-org';
+      
+      for(const [srvc, child] of this.services){
+         if(serviceId.includes(check)){ //urn:dslforum-org:service:WLANConfiguration:1
+           let name = serviceId.split(':')[3];
+           let nr = serviceId.split(':')[4];
+           if(nr){
+             name = name + nr;
+           }
+           if(srvc.includes(name)){
+             newService = srvc;
+           } else {
+             if(name.includes('WLAN') && nr){     
+                let nameNr = parseInt(nr) - 1;
+                name = name.substring(0, name.length - 1) + nameNr;                
+                if(srvc.includes(name)){
+                  newService = srvc;
+                }    
+             }
+           }
+           
+         } else { //urn:WLANConfiguration-com:serviceId:WLANConfiguration1
+           let name = serviceId.split(':')[3];
+           let lastChar = parseInt(name.substring(name.length - 1));
+           if(!isNaN(lastChar)){
+             name = name.substring(0, name.length - 1);
+           }
+           if(srvc.includes(name)){
+             newService = srvc;
+           } else {
+             if(name.includes('WLAN') && !isNaN(lastChar)){     
+                let nr = lastChar - 1;
+                name = name.substring(0, name.length - 1) + nr;                
+                if(srvc.includes(name)){
+                  newService = srvc;
+                }    
+             }
+           }
+         }
+      }
+      
+      if(newService){
+        service = this.services.get(newService)
+      } else {
+        debug(`Available services`, this.services.keys())
+        throw new Error(`service with id ${serviceId} not known`);
+      }
+
     }
     return service.execAction(actionName, pars)
   }
