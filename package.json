@@ -8,10 +8,10 @@
     "tr-064"
   ],
   "main": "dist/index",
-  "author": "ulfalfa",
+  "author": "seydx",
   "license": "MIT",
   "private": false,
-  "repository": "https://gitlab.com/ulfalfa/fritzbox.git",
+  "repository": "https://github.com/SeydX/fritzbox.git",
   "scripts": {
     "build": "trash dist && npm run build:main",
     "build:main": "tsc -p src/tsconfig.main.json",
