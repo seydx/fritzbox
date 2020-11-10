@@ -169,7 +169,7 @@ export class Service implements ServiceDescription {
    * @returns the result of the action
    */
   async execAction(actionName: string, vars: object = {}) {
-    debug(`Executing action ${this.serviceId}:${actionName}`, this.url.password)
+    debug(`Executing action ${this.serviceId}:${actionName}`, decodeURIComponent(this.url.password))
     await this.initialize()
 
     const action = this.actions.get(actionName)
@@ -251,7 +251,7 @@ export class Service implements ServiceDescription {
       uri,
       auth: {
         user: this.url.username,
-        pass: this.url.password,
+        pass: decodeURIComponent(this.url.password),
         sendImmediately: true,
       },
       rejectUnauthorized: false,
