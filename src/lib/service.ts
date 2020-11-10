@@ -197,7 +197,7 @@ export class Service implements ServiceDescription {
       uri,
       auth: {
         user: this.url.username,
-        pass: this.url.password,
+        pass: decodeURIComponent(this.url.password),
         sendImmediately: false,
       },
       rejectUnauthorized: false,
