@@ -78,6 +78,8 @@ export class Service implements ServiceDescription {
   readonly controlURL: string
   readonly eventSubURL: string
   readonly SCPDURL: string
+  
+  readonly options: any
 
   protected timer: NodeJS.Timeout
   get subcriptionActive(): boolean {
@@ -94,7 +96,8 @@ export class Service implements ServiceDescription {
    * @param serviceInfo the service info as loaded from overview fritzbox xml
    * @param url the base url of the fritzbox (including protocoll and port, e.g. https://fritz.box:49443)
    */
-  constructor(serviceInfo: ServiceDescription, protected url: URL) {
+  constructor(serviceInfo: ServiceDescription, protected url: URL, options: any) {
+    this.options = options;
     debug('Creating service', serviceInfo.serviceType, serviceInfo.serviceId)
     Object.assign(this, serviceInfo)
   }
@@ -169,7 +172,7 @@ export class Service implements ServiceDescription {
    * @returns the result of the action
    */
   async execAction(actionName: string, vars: object = {}) {
-    debug(`Executing action ${this.serviceId}:${actionName}`, decodeURIComponent(this.url.password))
+    debug(`Executing action ${this.serviceId}:${actionName}`, this.options.password)
     await this.initialize()
 
     const action = this.actions.get(actionName)
@@ -196,8 +199,8 @@ export class Service implements ServiceDescription {
       method: 'POST',
       uri,
       auth: {
-        user: this.url.username,
-        pass: decodeURIComponent(this.url.password),
+        user: this.options.username,
+        pass: this.options.password,
         sendImmediately: false,
       },
       rejectUnauthorized: false,
@@ -250,8 +253,8 @@ export class Service implements ServiceDescription {
       method: 'SUBSCRIBE',
       uri,
       auth: {
-        user: this.url.username,
-        pass: decodeURIComponent(this.url.password),
+        user: this.options.username,
+        pass: this.options.password,
         sendImmediately: true,
       },
       rejectUnauthorized: false,

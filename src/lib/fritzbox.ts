@@ -126,12 +126,12 @@ export class Fritzbox implements Unsubscribable {
 
     if (isServiceList(serviceList.service)) {
       serviceList.service.forEach(service => {
-        this.services.set(service.serviceId, new Service(service, this.url))
+        this.services.set(service.serviceId, new Service(service, this.url, this.options))
       })
     } else {
       this.services.set(
         serviceList.service.serviceId,
-        new Service(serviceList.service, this.url)
+        new Service(serviceList.service, this.url, this.options)
       )
     }
 
