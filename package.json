@@ -1,6 +1,6 @@
 {
   "name": "@seydx/fritzbox",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A typescript and promised based utilty for accessing a fritzbox via tr064",
   "keywords": [
     "fritzbox",
@@ -68,32 +68,29 @@
   },
   "devDependencies": {
     "@types/lolex": "^5.1.0",
-    "@types/node": "^10.17.44",
-    "@types/request": "^2.48.3",
-    "ava": "^2.4.0",
-    "cz-conventional-changelog": "^2.1.0",
-    "gh-pages": "^2.1.1",
-    "lolex": "^5.1.1",
-    "nock": "^11.7.0",
-    "nyc": "^14.1.1",
-    "opn-cli": "^3.1.0",
-    "rxjs": "^6.5.3",
-    "standard-version": "^8.0.1",
-    "trash-cli": "^1.4.0",
-    "ts-node": "^6.0.5",
-    "tslint": "^5.20.1",
-    "typedoc": "^0.15.3",
-    "typescript": "^3.7.3"
+    "@types/node": "^15.3.0",
+    "@types/request": "^2.48.5",
+    "ava": "^3.15.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "gh-pages": "^3.1.0",
+    "lolex": "^6.0.0",
+    "nock": "^13.0.11",
+    "nyc": "^15.1.0",
+    "opn-cli": "^5.0.0",
+    "rxjs": "^7.0.1",
+    "standard-version": "^9.3.0",
+    "trash-cli": "^4.0.0",
+    "ts-node": "^9.1.1",
+    "tslint": "^6.1.3",
+    "typedoc": "^0.20.36",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
-    "debug": "^4.1.1",
-    "request": "^2.88.0",
-    "underscore": "^1.9.1",
-    "xml2js": "^0.4.22",
-    "xmlbuilder": "^13.0.2"
-  },
-  "peerDependencies": {
-    "rxjs": "^6.x"
+    "debug": "^4.3.1",
+    "request": "^2.88.2",
+    "underscore": "^1.13.1",
+    "xml2js": "^0.4.23",
+    "xmlbuilder": "^15.1.1"
   },
   "config": {
     "commitizen": {

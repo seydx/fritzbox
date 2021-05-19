@@ -57,9 +57,8 @@
       true,
       "single"
     ],
+    "radix": false,
     "trailing-comma": false,
-
-
     "semicolon": [true, "never"],
     "variable-name": [true, "check-format", "allow-leading-underscore"],
     "no-namespace": false

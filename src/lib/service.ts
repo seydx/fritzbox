@@ -78,7 +78,7 @@ export class Service implements ServiceDescription {
   readonly controlURL: string
   readonly eventSubURL: string
   readonly SCPDURL: string
-  
+
   readonly options: any
 
   protected timer: NodeJS.Timeout
@@ -97,7 +97,7 @@ export class Service implements ServiceDescription {
    * @param url the base url of the fritzbox (including protocoll and port, e.g. https://fritz.box:49443)
    */
   constructor(serviceInfo: ServiceDescription, protected url: URL, options: any) {
-    this.options = options;
+    this.options = options
     debug('Creating service', serviceInfo.serviceType, serviceInfo.serviceId)
     Object.assign(this, serviceInfo)
   }
