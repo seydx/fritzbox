@@ -1,7 +1,7 @@
 {
   "name": "@seydx/fritzbox",
-  "version": "1.0.11",
-  "description": "A typescript and promised based utilty for accessing a fritzbox via tr064",
+  "version": "2.0.0-beta.0",
+  "description": "A promised based utilty for accessing a fritzbox via tr064",
   "keywords": [
     "fritzbox",
     "avm",
@@ -10,94 +10,36 @@
     "router",
     "igd"
   ],
-  "main": "dist/index",
-  "author": "seydx",
+  "main": "index.js",
   "license": "MIT",
-  "private": false,
-  "repository": "https://github.com/SeydX/fritzbox.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeydX/homebridge-bravia-tvos.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SeydX/homebridge-bravia-tvos/issues"
+  },
   "scripts": {
-    "build": "trash dist && npm run build:main",
-    "build:main": "tsc -p src/tsconfig.main.json",
-    "build:tests": "tsc -p src/tsconfig.spec.json",
-    "lint": "tslint --project tsconfig.json --fix",
-    "unit": "nyc ava",
-    "watch": "ava -vw",
-    "check-coverage": "nyc check-coverage",
-    "html-coverage": "nyc report --reporter=html",
-    "test": "npm run lint && npm run unit && npm run check-coverage",
-    "cov": "npm run unit && npm run html-coverage && opn build/coverage/index.html",
-    "docs": "npm run docs:html && opn build/docs/index.html",
-    "docs:html": "typedoc src/index.ts --excludePrivate --excludeNotExported --excludeProtected --mode file --theme minimal --out public",
-    "docs:publish": "yarn docs:html && gh-pages -d build/docs",
-    "changelog": "standard-version",
-    "release": "yarn reset && yarn test && yarn build && yarn docs:publish && yarn changelog",
-    "reset": "git clean -dfx && git reset --hard && yarn"
+    "lint": "eslint --fix ."
   },
-  "ava": {
-    "compileEnhancements": false,
-    "snapshotDir": "src/lib/testdata",
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "sources": [
-      "src/**/*.ts"
-    ],
-    "files": [
-      "src/**/*.spec.ts"
-    ]
-  },
-  "nyc": {
-    "exclude": [
-      "**/*.js",
-      "**/*.d.ts",
-      "**/*.spec.ts"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "reporter": [
-      "html",
-      "text"
-    ],
-    "cache": true,
-    "sourceMap": true,
-    "instrument": true,
-    "all": false,
-    "report-dir": "./build/coverage",
-    "temp-directory": "./build/nyc_output"
-  },
+  "author": "SeydX (https://github.com/SeydX/homebridge-bravia-tvos)",
+  "homepage": "https://github.com/SeydX/homebridge-bravia-tvos#readme",
   "devDependencies": {
-    "@types/lolex": "^5.1.0",
-    "@types/node": "^15.3.0",
-    "@types/request": "^2.48.5",
-    "ava": "^3.15.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "gh-pages": "^3.1.0",
-    "lolex": "^6.0.0",
-    "nock": "^13.0.11",
-    "nyc": "^15.1.0",
-    "opn-cli": "^5.0.0",
-    "rxjs": "^7.0.1",
-    "standard-version": "^9.3.0",
-    "trash-cli": "^4.0.0",
-    "ts-node": "^9.1.1",
-    "tslint": "^6.1.3",
-    "typedoc": "^0.20.36",
-    "typescript": "^4.2.4"
+    "@babel/core": "7.14.3",
+    "@babel/eslint-parser": "7.14.3",
+    "@babel/eslint-plugin": "7.13.16",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.0"
   },
   "dependencies": {
+    "@mreal/digest-auth": "^1.1.3",
     "debug": "^4.3.1",
-    "request": "^2.88.2",
-    "underscore": "^1.13.1",
+    "got": "^11.8.2",
+    "rxjs": "^7.0.1",
     "xml2js": "^0.4.23",
     "xmlbuilder": "^15.1.1"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
