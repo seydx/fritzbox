@@ -2,12 +2,64 @@
 
 # v2.0.0 - 2021-05-20
 
-## Other Changes
+## Breaking Changes
+- **1)** Due to refractorization the module must be imported differently
+
+```js
+//BEFORE
+const { Fritzbox } = require('@seydx/fritzbox');
+//import { Fritzbox } from ('@seydx/fritzbox');
+
+//AFTER
+const Fritzbox = require('@seydx/fritzbox');
+//import Fritzbox from ('@seydx/fritzbox');
+
+```
+
+- **2)** The new version uses `got` instead of `request`. Therefore requests using [requestXml](https://github.com/SeydX/fritzbox/blob/c2d7865424e8985896d6724d56c1f919e1bec104/lib/request.js#L61) must be changed, otherwise requests over HTTPS will result in `self signed error`.
+
+```js
+const { requestXml } = require('@seydx/fritzbox/lib/request');
+
+//BEFORE
+async function myRequest() {
+  try {
+    const uri = 'https://<USERNAME>:<PASSWORD>@fritz.box:49443/<ENDPOINT>';
+    const response = await requestXml({
+      uri,
+      {
+        rejectUnauthorized: false
+      }
+    });
+  } catch(err) {
+    console.log(err);
+  }
+}
+
+
+//AFTER
+async function myRequest() {
+  try {
+    const uri = 'https://<USERNAME>:<PASSWORD>@fritz.box:49443/<ENDPOINT>';
+    const response = await requestXml(uri, {
+      https:{
+        rejectUnauthorized: false
+      }
+    });
+  } catch(err) {
+    console.log(err);
+  }
+}
+```
+
+## Notable Changes
 - The code has been refactored
-  - Switched from `request` to `got`
-  - `rejectUnauthorized` needs to be changed from `await requestXml({uri, { rejectUnauthorized: false } })` to `await requestXml(uri, { https: { rejectUnauthorized: false } });`
-- Other bug fixes
+
+## Other Changes
 - Dependencies were updated
+
+## Bugfixes
+- Minor bugfixes
   
 # v1.x
 - Initial release (fork from [@ulfalfa](https://gitlab.com/ulfalfa/fritzbox))
