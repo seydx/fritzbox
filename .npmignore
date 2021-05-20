@@ -5,3 +5,4 @@ public
 tsconfig.json
 tslint.json
 .vscode
+examples

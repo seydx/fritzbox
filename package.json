@@ -5,7 +5,10 @@
   "keywords": [
     "fritzbox",
     "avm",
-    "tr-064"
+    "tr-064",
+    "tr064",
+    "router",
+    "igd"
   ],
   "main": "dist/index",
   "author": "seydx",
