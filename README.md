@@ -27,7 +27,7 @@ const Fritzbox = require('@seydx/fritzbox');
 const fritzbox = new Fritzbox({ username: 'test', password: 'testPwd123' });
 
 // Async/Await:
-async function getServices () {
+async function getDeviceInfo () {
   try {
     const info = await fritzbox.exec(
       'urn:dslforum-org:service:DeviceInfo:1',
@@ -47,7 +47,7 @@ const Fritzbox = require('@seydx/fritzbox');
 const fritzbox = new Fritzbox({ username: 'test', password: 'testPwd123' });
 
 // Async/Await:
-async function getServices () {
+async function getHosts () {
   try {
     const allHosts = await fritzbox.getAllHosts();
     console.log(allHosts);
