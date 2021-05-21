@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.0.3 - 2021-05-21
+- Better error handling
+
 # v2.0.2 - 2021-05-21
 - Switched to `serviceId`
 - Better error handling
