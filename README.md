@@ -30,7 +30,7 @@ const fritzbox = new Fritzbox({ username: 'test', password: 'testPwd123' });
 async function getDeviceInfo () {
   try {
     const info = await fritzbox.exec(
-      'urn:dslforum-org:service:DeviceInfo:1',
+      'urn:DeviceInfo-com:serviceId:DeviceInfo1',
       'GetInfo'
     );
     console.log(info);

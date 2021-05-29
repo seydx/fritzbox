@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.0.4 - 2021-05-29
+- Fix special characters in URL
+  
 # v2.0.3 - 2021-05-21
 - Better error handling
 
