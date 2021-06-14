@@ -1,6 +1,9 @@
 # Changelog
 
-# v2.1.0 - 2021-05-29
+# v2.1.1 - 2021-06-14
+- Added more debug
+- 
+# v2.1.0 - 2021-06-14
 - Added new methods: `fritzbox.getAllHostsV2()`, `fritzbox.getSmarthomeDevices()`
 - Added new request types: `requestAHA(..)`, `requestLUA(..)`
 
