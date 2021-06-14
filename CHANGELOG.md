@@ -1,5 +1,11 @@
 # Changelog
 
+# v2.1.3 - 2021-06-14
+- Return `object` for `requestLUA`
+
+# v2.1.2 - 2021-06-14
+- Added `blind` (smarthome) support
+  
 # v2.1.1 - 2021-06-14
 - Added more debug
 - 
