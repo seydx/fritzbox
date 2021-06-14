@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.1.4 - 2021-06-15
+- Dix `searchParams` for `reqeustAHA`
+  
 # v2.1.3 - 2021-06-14
 - Return `object` for `requestLUA`
 
