@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.1.8 - 2021-06-15
+- Changed `requestAHA(host, ain, sid, cmd)` to `requestAHA(host, cmd)`
+  
 # v2.1.7 - 2021-06-15
 - Revert back changes from v2.1.6
 
