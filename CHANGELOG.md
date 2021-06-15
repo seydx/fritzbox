@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.1.6 - 2021-06-15
+- Fix smarthome device/group ain
+
 # v2.1.5 - 2021-06-15
 - Fix blind position data
   
