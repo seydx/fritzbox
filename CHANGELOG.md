@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.1.7 - 2021-06-15
+- Revert back changes from v2.1.6
+
 # v2.1.6 - 2021-06-15
 - Fix smarthome device/group ain
 
