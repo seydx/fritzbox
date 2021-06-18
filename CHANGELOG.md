@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.1.9 - 2021-06-18
+- Support for buttons (2/4 channel)
+
 # v2.1.8 - 2021-06-15
 - Changed `requestAHA(host, ain, sid, cmd)` to `requestAHA(host, cmd)`
   
