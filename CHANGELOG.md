@@ -1,5 +1,11 @@
 # Changelog
 
+# v2.2.1 - 2021-06-20
+- Bugfix
+  
+# v2.2.0 - 2021-06-20
+- Bugfix
+
 # v2.1.9 - 2021-06-18
 - Support for buttons (2/4 channel)
 
