@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.2.5 - 2021-06-20
+- Better error debug
+
 # v2.2.4 - 2021-06-21
 - Minor bugfixes
 
