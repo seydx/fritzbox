@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.2.6 - 2021-06-22
+- Support other DECT buttons
+  
 # v2.2.5 - 2021-06-20
 - Better error debug
 
