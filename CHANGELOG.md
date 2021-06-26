@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.2.7 - 2021-06-27
+- Added SOAP error message
+  
 # v2.2.6 - 2021-06-22
 - Support other DECT buttons
   
