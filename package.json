@@ -1,6 +1,6 @@
 {
   "name": "@seydx/fritzbox",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "description": "A promised based utilty for accessing a fritzbox via tr064",
   "keywords": [
     "fritzbox",

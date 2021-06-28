@@ -1,5 +1,8 @@
 # Changelog
 
+# v2.2.8 - 2021-06-28
+- Fix decoding user password
+
 # v2.2.7 - 2021-06-27
 - Added SOAP error message
   
