@@ -1,5 +1,11 @@
 # Changelog
 
+# v2.3.0 - 2021-09-19
+- Refactored `getSmarthomeDevices`
+- Better error debug
+- Minor bugfixes
+- Updated dependencies
+
 # v2.2.9 - 2021-06-28
 - Updated dependencies
 
