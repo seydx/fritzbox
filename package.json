@@ -1,6 +1,6 @@
 {
-  "name": "@seydx/fritzbox",
-  "version": "2.3.1",
+  "name": "@blockiyt/fritzbox.js",
+  "version": "2.3.2",
   "description": "A promised based utilty for accessing a fritzbox via tr064",
   "keywords": [
     "fritzbox",
@@ -14,15 +14,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SeydX/fritzbox.git"
+    "url": "git+https://github.com/blockiyt/fritzbox.js.git"
   },
   "bugs": {
-    "url": "https://github.com/SeydX/fritzbox/issues"
+    "url": "https://github.com/blockiyt/fritzbox.js/issues"
   },
   "scripts": {
     "lint": "eslint --fix ."
   },
-  "author": "SeydX (https://github.com/SeydX/fritzbox)",
+  "author": "SeydX (https://github.com/SeydX/fritzbox), edited by blockiyt",
   "homepage": "https://github.com/SeydX/fritzbox#readme",
   "dependencies": {
     "@mreal/digest-auth": "^1.1.3",
